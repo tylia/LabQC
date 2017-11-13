@@ -2,12 +2,8 @@ package sample.model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
-import javax.swing.text.DateFormatter;
 import java.sql.*;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -49,8 +45,16 @@ public class DataSource {
             COLUMN_MCHC + ", " + COLUMN_PLT + ", " +
             COLUMN_WBC + " FROM " + TABLE_HEMATOLOGY;
 
+    public static final String INSERT_ROW = "INSERT INTO " + TABLE_HEMATOLOGY +
+            " (" + COLUMN_DATE + ", " + COLUMN_RBC + ", " +
+            COLUMN_MCV + ", " + COLUMN_HCT + ", " +
+            COLUMN_HGB + ", " + COLUMN_MCH + ", " +
+            COLUMN_MCHC + ", " + COLUMN_PLT + ", " +
+            COLUMN_WBC + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
     private Connection con;
     private static DataSource instance = new DataSource();
+    private PreparedStatement insertRow;
 
     private DataSource() {
 
@@ -65,7 +69,7 @@ public class DataSource {
             con = DriverManager.getConnection(CONNECTION_STRING);
             Statement statement = con.createStatement();
             statement.execute(CREATE_TABLE);
-
+            insertRow = con.prepareStatement(INSERT_ROW);
             return true;
         } catch (SQLException e) {
             System.out.println("Couldn't connect to database " + e.getMessage());
@@ -106,6 +110,20 @@ public class DataSource {
             System.out.println("Failed: " + e.getMessage());
             return null;
         }
+    }
+
+    public void insert(String date, int rbc, int hct, int mcv, int hgb, int mch, int mchc, int plt, int wbc) throws SQLException {
+        insertRow.setString(1, date);
+        insertRow.setInt(2, rbc);
+        insertRow.setInt(3, hct);
+        insertRow.setInt(4, mcv);
+        insertRow.setInt(5, hgb);
+        insertRow.setInt(6, mch);
+        insertRow.setInt(7, mchc);
+        insertRow.setInt(8, plt);
+        insertRow.setInt(9, wbc);
+
+        insertRow.executeUpdate();
     }
 
 }

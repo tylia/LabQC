@@ -59,39 +59,39 @@
             </VBox.margin>
             </Label>
 
-            <DatePicker promptText="Date" GridPane.columnIndex="0" GridPane.rowIndex="2">
+            <DatePicker fx:id="datePicker" promptText="Date" GridPane.columnIndex="0" GridPane.rowIndex="2">
             <VBox.margin>
                <Insets top="5.0" />
             </VBox.margin></DatePicker>
-            <TextField promptText="Lot number" GridPane.columnIndex="0" GridPane.rowIndex="3">
+            <TextField fx:id="lotField" promptText="Lot number" GridPane.columnIndex="0" GridPane.rowIndex="3">
             <VBox.margin>
                <Insets bottom="5.0" top="5.0" />
             </VBox.margin></TextField>
-            <TextField promptText="RBC" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-            <TextField promptText="MCV" GridPane.columnIndex="0" GridPane.rowIndex="5">
+            <TextField fx:id="rbcField" promptText="RBC" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <TextField fx:id="mcvField" promptText="MCV" GridPane.columnIndex="0" GridPane.rowIndex="5">
             <VBox.margin>
                <Insets top="5.0" />
             </VBox.margin></TextField>
-            <TextField promptText="HCT" GridPane.columnIndex="0" GridPane.rowIndex="6">
+            <TextField fx:id="hctField" promptText="HCT" GridPane.columnIndex="0" GridPane.rowIndex="6">
             <VBox.margin>
                <Insets bottom="5.0" top="5.0" />
             </VBox.margin></TextField>
-            <TextField promptText="HGB" GridPane.columnIndex="0" GridPane.rowIndex="7">
+            <TextField fx:id="hgbField" promptText="HGB" GridPane.columnIndex="0" GridPane.rowIndex="7">
             <VBox.margin>
                <Insets bottom="5.0" />
             </VBox.margin></TextField>
-            <TextField promptText="MCH" GridPane.columnIndex="0" GridPane.rowIndex="8" />
-            <TextField promptText="MCHC" GridPane.columnIndex="0" GridPane.rowIndex="9">
+            <TextField fx:id="mchField" promptText="MCH" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+            <TextField fx:id="mchcField" promptText="MCHC" GridPane.columnIndex="0" GridPane.rowIndex="9">
             <VBox.margin>
                <Insets bottom="5.0" top="5.0" />
             </VBox.margin></TextField>
-            <TextField promptText="PLT" GridPane.columnIndex="0" GridPane.rowIndex="10" />
-            <TextField promptText="WBC" GridPane.columnIndex="0" GridPane.rowIndex="11">
+            <TextField fx:id="pltField" promptText="PLT" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+            <TextField fx:id="wbcField" promptText="WBC" GridPane.columnIndex="0" GridPane.rowIndex="11">
             <VBox.margin>
                <Insets bottom="5.0" top="5.0" />
             </VBox.margin></TextField>
             <HBox alignment="BOTTOM_RIGHT">
-                <Button prefHeight="25.0" prefWidth="87.0" text="Add" GridPane.columnIndex="3" GridPane.rowIndex="11" fx:id="btnAdd">
+                <Button prefHeight="25.0" prefWidth="87.0" text="Add" GridPane.columnIndex="3" GridPane.rowIndex="11" fx:id="btnAdd" onMouseClicked="#insert">
                     <VBox.margin>
                         <Insets top="5.0" />
                     </VBox.margin>
