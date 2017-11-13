@@ -1,0 +1,7 @@
+#btnAdd {
+    -fx-background-color: slateblue; -fx-text-fill: white;
+}
+
+#btnAdd:pressed {
+    -fx-background-color: indigo; -fx-text-fill: white;
+}
