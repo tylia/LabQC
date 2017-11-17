@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <BorderPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller" stylesheets="@styles.css">
     <top>
         <HBox alignment="CENTER">
@@ -26,10 +27,11 @@
     </top>
     <center>
         <VBox>
-            <TableView fx:id="hematologyTable">
+            <TableView fx:id="hematologyTable" editable="true">
                 <columns>
-                    <TableColumn fx:id="dateColumn" prefWidth="75.0" text="DATE" />
-                    <TableColumn fx:id="rbcColumn" prefWidth="75.0" text="RBC" />
+                    <TableColumn fx:id="dateColumn" prefWidth="75.0" text="DATE">
+                    </TableColumn>
+                    <TableColumn fx:id="rbcColumn" prefWidth="75.0" text="RBC" editable="true" />
                     <TableColumn fx:id="mcvColumn" prefWidth="75.0" text="MCV" />
                     <TableColumn fx:id="hctColumn" prefWidth="75.0" text="HCT" />
                     <TableColumn fx:id="hgbColumn" prefWidth="75.0" text="HGB" />
@@ -37,6 +39,7 @@
                     <TableColumn fx:id="mchcColumn" prefWidth="75.0" text="MCHC" />
                     <TableColumn fx:id="pltColumn" prefWidth="75.0" text="PLT" />
                     <TableColumn fx:id="wbcColumn" prefWidth="75.0" text="WBC" />
+                    <TableColumn fx:id="deleteColumn" prefWidth="75.0" text="Delete" />
                 </columns>
                 <columnResizePolicy>
                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

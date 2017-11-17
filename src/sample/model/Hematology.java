@@ -1,5 +1,7 @@
 package sample.model;
 
+import javafx.event.Event;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -85,5 +87,37 @@ public class Hematology {
 
     public void setWbc(int wbc) {
         this.wbc = wbc;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Hematology)) return false;
+
+        Hematology that = (Hematology) o;
+
+        if (getRbc() != that.getRbc()) return false;
+        if (getMcv() != that.getMcv()) return false;
+        if (getHct() != that.getHct()) return false;
+        if (getHgb() != that.getHgb()) return false;
+        if (getMch() != that.getMch()) return false;
+        if (getMchc() != that.getMchc()) return false;
+        if (getPlt() != that.getPlt()) return false;
+        if (getWbc() != that.getWbc()) return false;
+        return getDate() != null ? getDate().equals(that.getDate()) : that.getDate() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getDate() != null ? getDate().hashCode() : 0;
+        result = 31 * result + getRbc();
+        result = 31 * result + getMcv();
+        result = 31 * result + getHct();
+        result = 31 * result + getHgb();
+        result = 31 * result + getMch();
+        result = 31 * result + getMchc();
+        result = 31 * result + getPlt();
+        result = 31 * result + getWbc();
+        return result;
     }
 }

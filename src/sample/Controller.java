@@ -1,20 +1,27 @@
 package sample;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.util.Callback;
+import javafx.util.converter.IntegerStringConverter;
 import sample.model.DataSource;
 import sample.model.Hematology;
 
-import javax.swing.text.TabableView;
-import java.beans.EventHandler;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class Controller {
+    private ObservableList<Hematology> listHematology;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     @FXML
     private TableView<Hematology> hematologyTable;
     @FXML
@@ -36,6 +43,8 @@ public class Controller {
     @FXML
     private TableColumn<Hematology, Integer> wbcColumn;
     @FXML
+    private TableColumn<Hematology, Hematology> deleteColumn;
+    @FXML
     private DatePicker datePicker;
     @FXML
     private TextField rbcField;
@@ -54,10 +63,23 @@ public class Controller {
     @FXML
     private TextField wbcField;
 
+
     @FXML
     public void initialize() throws ParseException {
+
+        listHematology = DataSource.getInstance().showTable();
         dateColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("date"));
         rbcColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("rbc"));
+        rbcColumn.setCellFactory(TextFieldTableCell.<Hematology, Integer>forTableColumn(new IntegerStringConverter()));
+//        keyColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<PropertyData, String>>() {
+//
+//            @Override
+//            public void handle(CellEditEvent<PropertyData, String> event) {
+//                ((PropertyData) event.getTableView().getItems().get(event.getTablePosition().getRow()))
+//                        .setKey(event.getNewValue());
+//            }
+//        });
+
         mcvColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("mcv"));
         hctColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("hct"));
         hgbColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("hgb"));
@@ -66,11 +88,70 @@ public class Controller {
         pltColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("plt"));
         wbcColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("wbc"));
 
-        hematologyTable.setItems(DataSource.getInstance().showTable());
+        deleteColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Hematology>("delete"));
+        deleteColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Hematology, Hematology>, ObservableValue<Hematology>>() {
+            @Override
+            public ObservableValue<Hematology> call(TableColumn.CellDataFeatures<Hematology, Hematology> param) {
+                return new ReadOnlyObjectWrapper<Hematology>(param.getValue());
+            }
+        });
+        deleteColumn.setCellFactory(new Callback<TableColumn<Hematology, Hematology>, TableCell<Hematology, Hematology>>() {
+            @Override
+            public TableCell<Hematology, Hematology> call(TableColumn<Hematology, Hematology> deleteColumn) {
+
+                final Button btnDelete = new Button();
+                btnDelete.setId("btnDelete");
+
+                TableCell<Hematology, Hematology> cell = new TableCell<Hematology, Hematology>() {
+                    @Override
+                    protected void updateItem(final Hematology item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (item == null) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btnDelete);
+                        }
+                    }
+                };
+                cell.setAlignment(Pos.CENTER);
+                btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        Hematology hematology = cell.getItem();
+                        String date = hematology.getDate().format(formatter);
+                        DataSource.getInstance().delete(date);
+                        listHematology.remove(hematology);
+                        hematologyTable.setItems(listHematology);
+                    }
+                });
+                return cell;
+            }
+        });
+
+//        deleteColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Hematology, Hematology>, ObservableValue<Hematology>>() {
+//            @Override
+//            public ObservableValue<Hematology> call(TableColumn.CellDataFeatures<Hematology, Hematology> param) {
+//                return new ReadOnlyObjectWrapper<Hematology>(param.getValue());
+//            }
+//        });
+//
+//        deleteColumn.setCellFactory(new Callback<TableColumn<Hematology, Hematology>, TableCell<Hematology, Hematology>>() {
+//            @Override
+//            public TableCell<Hematology, Hematology> call(TableColumn<Hematology, Hematology> param) {
+//                hematologyTable.setItems(listHematology);
+//                return new ButtonCell();
+//            }
+//        });
+
+        hematologyTable.setItems(listHematology);
     }
 
     @FXML
     public void insert() throws SQLException, ParseException {
+//        DropShadow shadow = new DropShadow();
+//        btnAdd.setEffect(shadow);
+
         int rbc = Integer.parseInt(rbcField.getText());
         int mcv = Integer.parseInt(mcvField.getText());
         int hct = Integer.parseInt(hctField.getText());
@@ -80,11 +161,24 @@ public class Controller {
         int plt = Integer.parseInt(pltField.getText());
         int wbc = Integer.parseInt(wbcField.getText());
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date = datePicker.getValue().format(formatter);
 
         DataSource.getInstance().insert(date, rbc, mcv, hct, hgb, mch, mchc, plt, wbc);
         clearFieldsAfterSubmitting();
+
+//        Hematology hematology = new Hematology();
+//        hematology.setDate(datePicker.getValue());
+//        hematology.setRbc(rbc);
+//        hematology.setMcv(mcv);
+//        hematology.setHct(hct);
+//        hematology.setHgb(hgb);
+//        hematology.setMch(mch);
+//        hematology.setMchc(mchc);
+//        hematology.setPlt(plt);
+//        hematology.setWbc(wbc);
+//
+//        listHematology.add(hematology);
+//        hematologyTable.setItems(listHematology);
 
         hematologyTable.setItems(DataSource.getInstance().showTable());
     }

@@ -5,3 +5,19 @@
 #btnAdd:pressed {
     -fx-background-color: indigo; -fx-text-fill: white;
 }
+
+#btnDelete {
+    -fx-graphic: url('trashCan.png');
+    -fx-background-color: transparent;
+    -fx-background-insets: 0 0 0 0, 0, 0, 0;
+    -fx-background-radius: 0 0 0 0, 0, 0, 0;
+    -fx-border-width: 0 0 0 0, 0, 0, 0;
+}
+
+#btnDelete:hover {
+    -fx-cursor: hand;
+}
+
+.table-cell {
+    -fx-alignment: CENTER;
+}

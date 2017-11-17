@@ -52,9 +52,12 @@ public class DataSource {
             COLUMN_MCHC + ", " + COLUMN_PLT + ", " +
             COLUMN_WBC + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+    public static final String DELETE_ROW = "DELETE FROM " + TABLE_HEMATOLOGY + " WHERE " + COLUMN_DATE + " = ?";
+
     private Connection con;
     private static DataSource instance = new DataSource();
     private PreparedStatement insertRow;
+    private PreparedStatement deleteRow;
 
     private DataSource() {
 
@@ -70,6 +73,7 @@ public class DataSource {
             Statement statement = con.createStatement();
             statement.execute(CREATE_TABLE);
             insertRow = con.prepareStatement(INSERT_ROW);
+            deleteRow = con.prepareStatement(DELETE_ROW);
             return true;
         } catch (SQLException e) {
             System.out.println("Couldn't connect to database " + e.getMessage());
@@ -79,9 +83,19 @@ public class DataSource {
 
     public void close() {
         try {
+            deleteRow.close();
+        } catch (SQLException e) {
+            System.out.println("Couldn't close connection " + e.getMessage());
+        }
+        try {
+            insertRow.close();
+        } catch (SQLException e) {
+            System.out.println("Couldn't close connection " + e.getMessage());
+        }
+        try {
             con.close();
         } catch (SQLException e) {
-            System.out.println("Couldn't find connection " + e.getMessage());
+            System.out.println("Couldn't close connection " + e.getMessage());
         }
     }
 
@@ -126,4 +140,12 @@ public class DataSource {
         insertRow.executeUpdate();
     }
 
+    public void delete(String date) {
+        try {
+            deleteRow.setString(1, date);
+            deleteRow.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Couldn't delete selected row");
+        }
+    }
 }
