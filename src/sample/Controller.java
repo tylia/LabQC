@@ -71,15 +71,6 @@ public class Controller {
         dateColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("date"));
         rbcColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("rbc"));
         rbcColumn.setCellFactory(TextFieldTableCell.<Hematology, Integer>forTableColumn(new IntegerStringConverter()));
-//        keyColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<PropertyData, String>>() {
-//
-//            @Override
-//            public void handle(CellEditEvent<PropertyData, String> event) {
-//                ((PropertyData) event.getTableView().getItems().get(event.getTablePosition().getRow()))
-//                        .setKey(event.getNewValue());
-//            }
-//        });
-
         mcvColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("mcv"));
         hctColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("hct"));
         hgbColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("hgb"));
@@ -129,21 +120,6 @@ public class Controller {
             }
         });
 
-//        deleteColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Hematology, Hematology>, ObservableValue<Hematology>>() {
-//            @Override
-//            public ObservableValue<Hematology> call(TableColumn.CellDataFeatures<Hematology, Hematology> param) {
-//                return new ReadOnlyObjectWrapper<Hematology>(param.getValue());
-//            }
-//        });
-//
-//        deleteColumn.setCellFactory(new Callback<TableColumn<Hematology, Hematology>, TableCell<Hematology, Hematology>>() {
-//            @Override
-//            public TableCell<Hematology, Hematology> call(TableColumn<Hematology, Hematology> param) {
-//                hematologyTable.setItems(listHematology);
-//                return new ButtonCell();
-//            }
-//        });
-
         hematologyTable.setItems(listHematology);
     }
 
@@ -165,20 +141,6 @@ public class Controller {
 
         DataSource.getInstance().insert(date, rbc, mcv, hct, hgb, mch, mchc, plt, wbc);
         clearFieldsAfterSubmitting();
-
-//        Hematology hematology = new Hematology();
-//        hematology.setDate(datePicker.getValue());
-//        hematology.setRbc(rbc);
-//        hematology.setMcv(mcv);
-//        hematology.setHct(hct);
-//        hematology.setHgb(hgb);
-//        hematology.setMch(mch);
-//        hematology.setMchc(mchc);
-//        hematology.setPlt(plt);
-//        hematology.setWbc(wbc);
-//
-//        listHematology.add(hematology);
-//        hematologyTable.setItems(listHematology);
 
         hematologyTable.setItems(DataSource.getInstance().showTable());
     }
