@@ -71,6 +71,19 @@ public class Controller {
         dateColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("date"));
         rbcColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("rbc"));
         rbcColumn.setCellFactory(TextFieldTableCell.<Hematology, Integer>forTableColumn(new IntegerStringConverter()));
+        rbcColumn.setOnEditCommit(event -> {
+//            int oldValue = event.getOldValue();
+//            int newValue = event.getNewValue();
+//            Hematology hematology = event.getRowValue();
+//
+//            if (newValue != oldValue) {
+//
+//            }
+//            event.getRowValue().setRbc(event.getNewValue());
+            int newRbcValue = event.getNewValue();
+            String date = event.getRowValue().getDate().format(formatter);
+            DataSource.getInstance().update(date, newRbcValue);
+        });
         mcvColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("mcv"));
         hctColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("hct"));
         hgbColumn.setCellValueFactory(new PropertyValueFactory<Hematology, Integer>("hgb"));

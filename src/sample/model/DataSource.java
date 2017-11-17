@@ -53,11 +53,14 @@ public class DataSource {
             COLUMN_WBC + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     public static final String DELETE_ROW = "DELETE FROM " + TABLE_HEMATOLOGY + " WHERE " + COLUMN_DATE + " = ?";
+    public static final String UPDATE_RBC = "UPDATE " + TABLE_HEMATOLOGY + " SET " + COLUMN_RBC
+            + " = ? WHERE " + COLUMN_DATE + " = ?";
 
     private Connection con;
     private static DataSource instance = new DataSource();
     private PreparedStatement insertRow;
     private PreparedStatement deleteRow;
+    private PreparedStatement updateRBC;
 
     private DataSource() {
 
@@ -74,6 +77,7 @@ public class DataSource {
             statement.execute(CREATE_TABLE);
             insertRow = con.prepareStatement(INSERT_ROW);
             deleteRow = con.prepareStatement(DELETE_ROW);
+            updateRBC = con.prepareStatement(UPDATE_RBC);
             return true;
         } catch (SQLException e) {
             System.out.println("Couldn't connect to database " + e.getMessage());
@@ -84,6 +88,11 @@ public class DataSource {
     public void close() {
         try {
             deleteRow.close();
+        } catch (SQLException e) {
+            System.out.println("Couldn't close connection " + e.getMessage());
+        }
+        try {
+            updateRBC.close();
         } catch (SQLException e) {
             System.out.println("Couldn't close connection " + e.getMessage());
         }
@@ -146,6 +155,16 @@ public class DataSource {
             deleteRow.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Couldn't delete selected row");
+        }
+    }
+
+    public void update(String date, int rbc) {
+        try {
+            updateRBC.setInt(1, rbc);
+            updateRBC.setString(2, date);
+            updateRBC.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Couldn't update rbc value");
         }
     }
 }
